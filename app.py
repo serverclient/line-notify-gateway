@@ -69,6 +69,16 @@ def webhook():
             return jsonify({'status':'bad request'}), 400
 
 
+@app.route('/logs')
+def logs():
+    """
+    Display logs on web browser.
+    """
+    file = open(LOG_PATH, 'r+')
+    content = file.read()
+    return render_template('logs.html', text=content, name='logs')
+
+
 if __name__ == "__main__":
     manage_logs.init_log(LOG_PATH)
     app.run(host='0.0.0.0')
