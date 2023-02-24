@@ -31,16 +31,14 @@ def firing_alert(request):
     Firing alert to line notification with message payload.
     """
     if request.json['status'] == 'firing':
-        icon = "⛔⛔⛔ 😡 ⛔⛔⛔"
         status = "Firing"
         time = reformat_datetime(request.json['alerts'][0]['startsAt'])
     else:
-        icon = "🔷🔷🔷 😎 🔷🔷🔷"
         status = "Resolved"
         time = str(datetime.now().date()) + ' ' + str(datetime.now().time().strftime('%H:%M:%S'))
     header = {'Authorization':request.headers['AUTHORIZATION']}
     for alert in request.json['alerts']:
-        msg = "Alertmanger: " + icon + "\nStatus: " + status + "\nSeverity: " + alert['labels']['severity'] + "\nTime: " + time + "\nSummary: " + alert['annotations']['summary'] + "\nDescription: " + alert['annotations']['description']
+        msg = "主機名稱: " + alert['labels']['computer'] + "\n發生時間: " + time + "\n警示等級: " + alert['labels']['severity'] + "\nSummary: " + alert['annotations']['summary'] + "\n敘述句:" + alert['labels']['statement'] + "\n當前狀態: " + status
         msg = {'message': msg}
         response = requests.post(LINE_NOTIFY_URL, headers=header, data=msg)
 
