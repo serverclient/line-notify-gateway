@@ -5,7 +5,7 @@ Line Notification Gateway for Alertmanager (Promtheus).
 ## Installation ##
 
 ```bash
-git clone https://github.com/be99inner/line-notify-gateway.git
+git clone https://github.com/jieshiun/line-notify-gateway.git
 cd line-notify-gateway
 docker-compose up -d
 ```
