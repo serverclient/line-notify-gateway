@@ -32,13 +32,13 @@ def firing_alert(request):
     """
     if request.json['status'] == 'firing':
         status = "Firing"
-        #time = reformat_datetime(request.json['alerts'][0]['startsAt'])
+        time = reformat_datetime(request.json['alerts'][0]['startsAt'])
     else:
         status = "Resolved"
-        #time = str(datetime.now().date()) + ' ' + str(datetime.now().time().strftime('%H:%M:%S'))
+        time = str(datetime.now().date()) + ' ' + str(datetime.now().time().strftime('%H:%M:%S'))
     header = {'Authorization':request.headers['AUTHORIZATION']}
     for alert in request.json['alerts']:
-        msg = "\n" + alert['annotations']['message'] + "\n當前狀態: " + status
+        msg = "\n發生時間: " + time + alert['annotations']['message'] + "當前狀態: " + status
         msg = {'message': msg}
         response = requests.post(LINE_NOTIFY_URL, headers=header, data=msg)
 
