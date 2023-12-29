@@ -6,6 +6,7 @@ License: MIT
 
 import logging
 import requests
+import os
 from datetime import datetime
 from flask import Flask, render_template, request, jsonify
 
@@ -13,6 +14,7 @@ import manage_logs
 
 LOG_PATH = 'logs/line-notify-gateway.log'
 LINE_NOTIFY_URL = 'https://notify-api.line.me/api/notify'
+HOST = os.getenv('HOST')
 app = Flask(__name__)
 
 
@@ -38,7 +40,7 @@ def firing_alert(request):
         time = str(datetime.now().date()) + ' ' + str(datetime.now().time().strftime('%H:%M:%S'))
     header = {'Authorization':request.headers['AUTHORIZATION']}
     for alert in request.json['alerts']:
-        msg = "\n發生時間: " + time + "\n" + alert['annotations']['summary'] + "當前狀態: " + status
+        msg = "\nFrom " + HOST + "\nTimestamp: " + time + "\nMessage" + alert['annotations']['summary'] + "\nStatus: " + status
         msg = {'message': msg}
         response = requests.post(LINE_NOTIFY_URL, headers=header, data=msg)
 
@@ -59,6 +61,7 @@ def webhook():
     """
     logging.basicConfig(filename=LOG_PATH, level=logging.DEBUG)
     logging.debug(str(request))
+    #logging.debug(request.get_json())
     if request.method == 'GET':
         return jsonify({'status':'success'}), 200
     if request.method == 'POST':

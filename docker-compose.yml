@@ -1,7 +1,10 @@
 version: '3.7'
 services:
   line-notify-gateway:
+    container_name: line-notify-gateway
     build: .
+    environment:
+      - HOST=139
     ports:
-      - 5000:5000
+      - 5555:5000
     restart: always
