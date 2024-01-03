@@ -4,7 +4,7 @@ services:
     container_name: line-notify-gateway
     build: .
     environment:
-      - HOST=your_ip
+      - HOST=<your_ip>
     ports:
       - 5555:5000
     restart: always
